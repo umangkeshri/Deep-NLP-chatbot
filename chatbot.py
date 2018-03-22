@@ -164,18 +164,35 @@ for length in range(1, 25 + 1):
     for i in enumerate(questions_to_int):
         if len(i[1]) == length:
             sorted_clean_questions.append(questions_to_int[i[0]])
-            sorted_clean_answers.append(questions_to_int[i[0]])
+            sorted_clean_answers.append(answers_to_int[i[0]])
 
-        
+
 ##---------Building seq2seq model-----------#
             
 #creating placeholders for the inputs and the targets
 
 def model_inputs():
-    inputs = tf.placeholder(tf.int32, [None, None], name= = 'input')
-    targets= tf.placeholder(tf.int32, [None, None], name= = 'target')
-    lr = tf.placeholder(tf.float32, name= = 'learning rate')
-    keep_prob = tf.placeholder(tf.float32, name= = 'keep_prob')
-    
+    inputs = tf.placeholder(tf.int32, [None, None], name ='input')
+    targets= tf.placeholder(tf.int32, [None, None], name ='target')
+    lr = tf.placeholder(tf.float32, name = 'learning rate')
+    keep_prob = tf.placeholder(tf.float32, name = 'keep_prob')
     return inputs,targets,lr,keep_prob
 
+#pprocessing the targets
+     
+def preprocess_targets(targets, word2int, batch_size):
+    left_side = tf.fill([batch_size, 1], word2int['<SOS>'])
+    right_side = tf.strided_slice(targets, [0,0], [batch_size,-1], [1,1])
+    preprocessed_targets = tf.concat([left_side,right_side],1)
+    return preprocessed_targets
+
+#Creating the encoder RNN layer    
+
+    
+    
+    
+    
+    
+    
+    
+    
