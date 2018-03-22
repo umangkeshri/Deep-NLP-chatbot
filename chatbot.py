@@ -135,6 +135,47 @@ for i in range(len(clean_answers)):
 #Translaing allthe questions and the answers into integers
 #and replacing allhe wordsthat were filtered out by <OUT>
 
+questions_to_int = []
+for question in clean_questions:
+    integers = []
+    for word in question.split():
+        if word not in questionsword2int:
+            integers.append(questionsword2int['<OUT>'])
+        else:
+            integers.append(questionsword2int[word])
+        questions_to_int.append(integers)
     
+answers_to_int = []
+for answer in clean_answers:
+    integers = []
+    for word in answer.split():
+        if word not in answersword2int:
+            integers.append(answersword2int['<OUT>'])
+        else:
+            integers.append(answersword2int[word])
+        answers_to_int.append(integers)
+        
+#sorting questions and answers by the length of qustions
+        
+sorted_clean_questions = []
+sorted_clean_answers = []
+
+for length in range(1, 25 + 1):
+    for i in enumerate(questions_to_int):
+        if len(i[1]) == length:
+            sorted_clean_questions.append(questions_to_int[i[0]])
+            sorted_clean_answers.append(questions_to_int[i[0]])
+
+        
+##---------Building seq2seq model-----------#
+            
+#creating placeholders for the inputs and the targets
+
+def model_inputs():
+    inputs = tf.placeholder(tf.int32, [None, None], name= = 'input')
+    targets= tf.placeholder(tf.int32, [None, None], name= = 'target')
+    lr = tf.placeholder(tf.float32, name= = 'learning rate')
+    keep_prob = tf.placeholder(tf.float32, name= = 'keep_prob')
     
-    
+    return inputs,targets,lr,keep_prob
+
